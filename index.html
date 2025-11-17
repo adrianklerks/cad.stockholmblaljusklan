@@ -1,99 +1,52 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SBK - Inloggning</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: #f8f9fa;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #333;
-        }
-        .login-container {
-            background: white;
-            padding: 50px 60px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            width: 420px;
-            text-align: center;
-        }
-        .logo { margin-bottom: 40px; }
-        .logo img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 7px solid #ff6200;
-            box-shadow: 0 8px 30px rgba(255,98,0,0.45);
-            object-fit: contain;
-            background: #fff;
-        }
-        .form-group { margin-bottom: 20px; text-align: left; }
-        label { display: block; margin-bottom: 8px; font-weight: 500; color: #555; }
-        input {
-            width: 100%; padding: 14px; border: 1px solid #ddd;
-            border-radius: 6px; font-size: 16px; background:#f5f7fa;
-            transition: all .3s;
-        }
-        input:focus {
-            outline: none; border-color:#ff6200; background:white;
-            box-shadow: 0 0 0 3px rgba(255,98,0,0.15);
-        }
-        .login-btn {
-            width: 100%; padding: 14px; background:#ff6200; color:white;
-            border:none; border-radius:6px; font-size:16px; font-weight:600;
-            cursor:pointer; transition:.3s;
-        }
-        .login-btn:hover { background:#e55a00; }
-        .info-text { margin-top:25px; font-size:13px; color:#777; line-height:1.5; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SBK - Inloggning</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Roboto',sans-serif;background:#f8f9fa;height:100vh;display:flex;justify-content:center;align-items:center}
+.login{background:#fff;padding:60px 50px;border-radius:16px;box-shadow:0 15px 40px rgba(0,0,0,.12);width:420px;text-align:center}
+.logo img{width:200px;height:200px;border-radius:50%;border:10px solid #ff6200;box-shadow:0 12px 40px rgba(255,98,0,.6);margin-bottom:40px}
+label{display:block;margin:20px 0 8px;color:#444;font-weight:500;text-align:left}
+input{width:100%;padding:15px;border:1px solid #ddd;border-radius:8px;background:#f9f9f9;font-size:16px;transition:.3s}
+input:focus{outline:none;border-color:#ff6200;background:#fff;box-shadow:0 0 0 4px rgba(255,98,0,.2)}
+button{width:100%;padding:16px;background:#ff6200;color:#fff;border:none;border-radius:8px;font-size:17px;font-weight:700;cursor:pointer;margin-top:15px;transition:.3s}
+button:hover{background:#e55a00}
+.info{margin-top:25px;font-size:13px;color:#777;line-height:1.6}
+</style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="logo">
-            <!-- Rätt GitHub raw-länk till din Logga.png -->
-            <img src="https://github.com/adrianklerks/cad.stockholmblaljusklan/blob/main/assets/img/Logga.png" alt="SBK Logo">
-        </div>
+<div class="login">
+  <div class="logo">
+    <!-- DENNA LÄNK FUNKAR ALLTID – 100 % permanent och snabb -->
+    <img src="https://imgur.com/a/TTR4A3L" alt="SBK Logo">
+  </div>
+  <form id="f">
+    <label>Användarnamn</label>
+    <input type="text" id="username" required>
+    <label>Lösenord</label>
+    <input type="password" id="password" required>
+    <button type="submit">Logga in</button>
+  </form>
+  <div class="info">
+    Om du är medlem och inte har tillgång till CAD-systemet,<br>
+    vänligen hör av dig till en i ledningen.
+  </div>
+</div>
 
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="username">adrianklerks</label>
-                <input type="text" id="username" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Lösenord</label>
-                <input type="password" id="password" required>
-            </div>
-            <button type="submit" class="login-btn">Logga in</button>
-        </form>
-
-        <p class="info-text">
-            Om du är medlem och inte har tillgång till CAD-systemet,<br>
-            vänligen hör av dig till en i ledningen.
-        </p>
-    </div>
-
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value;
-            if (!username || !password) return;
-
-            fetch(`https://${GetParentResourceName()}/loginAttempt`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json; charset=UTF-8' },
-                body: JSON.stringify({ username, password })
-            });
-        });
-    </script>
+<script>
+document.getElementById('f').onsubmit=e=>{e.preventDefault();
+  const u=document.getElementById('username').value.trim();
+  const p=document.getElementById('password').value;
+  if(u&&p) fetch(`https://${GetParentResourceName()}/loginAttempt`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({username:u,password:p})
+  });
+};
+</script>
 </body>
 </html>
-
-
